@@ -1,0 +1,23 @@
+services:
+  scraper:
+    container_name: bolivares-scraper-container
+    build: .
+    working_dir: /app
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - scraper_node_modules:/app/node_modules
+      - pnpm_store:/home/node/.pnpm-store
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
+
+volumes:
+  pnpm_store:
+  scraper_node_modules:
