@@ -4,7 +4,7 @@
   "description": "TypeScript API scraper for the official Venezuelan Central Bank (BCV) USD/VES exchange rate.",
   "type": "module",
   "license": "MIT",
-  "author": "Simon (https://github.com/cmonc2)",
+  "author": "Simon Rotjes (https://github.com/cmonc2)",
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
