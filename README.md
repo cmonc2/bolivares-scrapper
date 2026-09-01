@@ -33,6 +33,23 @@ This microservice was designed with a **self-healing dual-transport strategy**:
 
 ---
 
+## 🌐 Live Public API
+
+A free, high-availability public instance of this microservice is deployed on Vercel:
+
+<div align="center">
+
+[![Live API](https://img.shields.io/badge/🚀_Live_API-Haz_clic_aquí_para_obtener_la_tasa_del_día-23c45e?style=for-the-badge&logo=vercel&logoColor=white)](https://bolivares-scrapper.vercel.app/)
+
+</div>
+
+> 💡 **Quick Test (Terminal)**:
+> ```bash
+> curl https://bolivares-scrapper.vercel.app/
+> ```
+
+---
+
 ## 📡 API Reference
 
 ### `GET /` or `GET /api/rate`
