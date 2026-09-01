@@ -39,7 +39,7 @@ A free, high-availability public instance of this microservice is deployed on Ve
 
 <div align="center">
 
-[![Live API](https://img.shields.io/badge/🚀_Live_API-Haz_clic_aquí_para_obtener_la_tasa_del_día-23c45e?style=for-the-badge&logo=vercel&logoColor=white)](https://bolivares-scrapper.vercel.app/)
+[![Live API](https://img.shields.io/badge/🚀_Live_API-Click_here_to_get_today's_rate-23c45e?style=for-the-badge&logo=vercel&logoColor=white)](https://bolivares-scrapper.vercel.app/)
 
 </div>
 
