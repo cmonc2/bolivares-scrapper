@@ -4,7 +4,7 @@ import { cors } from 'hono/cors';
 import { rateRouter } from './routes/rate.js';
 import { env } from './schemas/env.js';
 
-const app = new Hono();
+export const app = new Hono();
 
 // Enable CORS for browser extension and external clients
 app.use('*', cors());
@@ -13,9 +13,11 @@ app.use('*', cors());
 app.route('/', rateRouter);
 app.route('/api/rate', rateRouter);
 
-console.log(`🚀 Bolívares Scrapper API running at http://localhost:${env.PORT}`);
-
-serve({
-  fetch: app.fetch,
-  port: env.PORT,
-});
+// Start server locally (outside Vercel serverless environment)
+if (!process.env.VERCEL) {
+  console.log(`🚀 Bolívares Scrapper API running at http://localhost:${env.PORT}`);
+  serve({
+    fetch: app.fetch,
+    port: env.PORT,
+  });
+}
