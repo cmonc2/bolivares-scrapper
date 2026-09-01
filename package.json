@@ -5,6 +5,7 @@
   "type": "module",
   "license": "MIT",
   "author": "Simon Rotjes (https://github.com/cmonc2)",
+  "packageManager": "pnpm@11.4.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
