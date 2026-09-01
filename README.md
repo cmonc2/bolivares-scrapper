@@ -52,7 +52,7 @@ A free, high-availability public instance of this microservice is deployed on Ve
 
 ## 📡 API Reference
 
-### `GET /` or `GET /api/rate`
+### `GET /`
 
 Retrieves the latest official USD/VES exchange rate.
 

@@ -12,10 +12,9 @@ app.use('*', cors());
 
 // Routes
 app.route('/', rateRouter);
-app.route('/api/rate', rateRouter);
 
-// Start standalone server locally (outside Vercel serverless environment)
-if (!process.env.VERCEL) {
+// Start standalone server locally (outside Vercel and test environments)
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
   console.log(`🚀 Bolívares Scrapper API running at http://localhost:${env.PORT}`);
   serve({
     fetch: app.fetch,

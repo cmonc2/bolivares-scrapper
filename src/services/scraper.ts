@@ -17,12 +17,17 @@ const directAgent = new Agent({
   },
 });
 
-function getTodayDate(): string {
+export function clearRateCache(): void {
+  cachedRate = null;
+  lastScrapedTime = 0;
+}
+
+export function getTodayDate(): string {
   const now = new Date();
   return now.toISOString().split('T')[0];
 }
 
-async function fetchHtml(proxyUrl?: string): Promise<string> {
+export async function fetchHtml(proxyUrl?: string): Promise<string> {
   const dispatcher = proxyUrl
     ? new ProxyAgent({
         uri: proxyUrl,
@@ -49,7 +54,7 @@ async function fetchHtml(proxyUrl?: string): Promise<string> {
   return await response.text();
 }
 
-function extractRateFromHtml(html: string): number {
+export function extractRateFromHtml(html: string): number {
   const $ = cheerio.load(html);
   const rawRateText = $('#dolar strong').text().trim();
 
@@ -82,13 +87,13 @@ export async function getBcvRate(): Promise<RateResponse> {
   let html: string | null = null;
   let isExposed = false;
 
-  // Vercel Cloud: Requests originate from Vercel servers (IP protected)
+  // 1. Vercel Cloud: Requests originate from Vercel servers (IP protected)
   if (process.env.VERCEL) {
     html = await fetchHtml();
     isExposed = false;
     console.log('[Scraper] Scraped BCV via Vercel Cloud Serverless (protected).');
   } else {
-    // Local Environment: Attempt to scrape using the local VPN proxy first
+    // 2. Local Environment: Attempt to scrape using the local VPN proxy first
     try {
       html = await fetchHtml(DEFAULT_PROXY_URL);
       isExposed = false;
