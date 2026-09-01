@@ -69,7 +69,8 @@ function extractRateFromHtml(html: string): number {
 
 /**
  * Retrieves the BCV USD exchange rate.
- * Tries scraping via VPN proxy first. If unavailable, falls back to direct request.
+ * - On Vercel: Fetches directly through Vercel's cloud infrastructure (exposed: false).
+ * - Locally: Tries VPN proxy first (exposed: false), with fallback to direct connection (exposed: true).
  * Returns { date, rate, exposed }.
  */
 export async function getBcvRate(): Promise<RateResponse> {
@@ -81,34 +82,41 @@ export async function getBcvRate(): Promise<RateResponse> {
   let html: string | null = null;
   let isExposed = false;
 
-  // Step 1: Attempt to scrape using the VPN HTTP proxy
-  try {
-    html = await fetchHtml(DEFAULT_PROXY_URL);
+  // Vercel Cloud: Requests originate from Vercel servers (IP protected)
+  if (process.env.VERCEL) {
+    html = await fetchHtml();
     isExposed = false;
-    console.log('[Scraper] Successfully scraped BCV via client-vpn proxy (protected).');
-  } catch (vpnError: any) {
-    console.warn(
-      `[Scraper] VPN proxy unavailable or failed (${vpnError?.message || vpnError}). Falling back to direct connection...`,
-    );
-  }
-
-  // Step 2: Fallback to direct fetch if VPN did not yield HTML
-  if (!html) {
+    console.log('[Scraper] Scraped BCV via Vercel Cloud Serverless (protected).');
+  } else {
+    // Local Environment: Attempt to scrape using the local VPN proxy first
     try {
-      html = await fetchHtml();
-      isExposed = true;
-      console.log('[Scraper] Successfully scraped BCV directly (exposed).');
-    } catch (directError: any) {
-      console.error(`[Scraper] Direct scrape also failed: ${directError?.message || directError}`);
-      if (cachedRate) {
-        console.log('[Scraper] Returning previous cached rate as emergency fallback.');
-        return cachedRate;
+      html = await fetchHtml(DEFAULT_PROXY_URL);
+      isExposed = false;
+      console.log('[Scraper] Scraped BCV via client-vpn proxy (protected).');
+    } catch (vpnError: any) {
+      console.warn(
+        `[Scraper] VPN proxy unavailable (${vpnError?.message || vpnError}). Falling back to direct connection...`,
+      );
+    }
+
+    // Fallback to direct fetch if VPN did not yield HTML
+    if (!html) {
+      try {
+        html = await fetchHtml();
+        isExposed = true;
+        console.log('[Scraper] Scraped BCV directly (exposed).');
+      } catch (directError: any) {
+        console.error(`[Scraper] Direct scrape also failed: ${directError?.message || directError}`);
+        if (cachedRate) {
+          console.log('[Scraper] Returning previous cached rate as emergency fallback.');
+          return cachedRate;
+        }
+        throw new Error(`Scraping failed: ${directError?.message || 'Unknown network error'}`);
       }
-      throw new Error(`Scraping failed: ${directError?.message || 'Unknown network error'}`);
     }
   }
 
-  // Step 3: Extract and validate rate
+  // Extract and validate rate
   const rate = extractRateFromHtml(html);
   const date = getTodayDate();
 

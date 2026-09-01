@@ -1,4 +1,5 @@
 import { serve } from '@hono/node-server';
+import { handle } from '@hono/node-server/vercel';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { rateRouter } from './routes/rate.js';
@@ -13,7 +14,7 @@ app.use('*', cors());
 app.route('/', rateRouter);
 app.route('/api/rate', rateRouter);
 
-// Start server locally (outside Vercel serverless environment)
+// Start standalone server locally (outside Vercel serverless environment)
 if (!process.env.VERCEL) {
   console.log(`🚀 Bolívares Scrapper API running at http://localhost:${env.PORT}`);
   serve({
@@ -21,3 +22,6 @@ if (!process.env.VERCEL) {
     port: env.PORT,
   });
 }
+
+// Export default handler for Vercel Serverless Functions
+export default handle(app);
