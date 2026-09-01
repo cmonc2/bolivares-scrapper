@@ -1,5 +1,8 @@
 FROM node:22-alpine
 
+# Install git and bash for VS Code built-in Source Control and terminal
+RUN apk add --no-cache git bash
+
 WORKDIR /app
 
 RUN corepack enable

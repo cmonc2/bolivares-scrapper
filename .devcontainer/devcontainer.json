@@ -1,13 +1,6 @@
 {
   "name": "Bolívares Scrapper Dev Container",
   "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "scraper",
-  "workspaceFolder": "/app",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "eamodio.gitlens"
-      ]
-    }
-  }
+  "service": "bolivares-scrapper",
+  "workspaceFolder": "/app"
 }

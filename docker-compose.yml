@@ -1,5 +1,5 @@
 services:
-  scraper:
+  bolivares-scrapper:
     container_name: bolivares-scraper-container
     build: .
     working_dir: /app
