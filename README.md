@@ -98,3 +98,9 @@ docker compose up -d
 ```
 
 To develop inside VS Code, open the folder and choose **"Dev Containers: Reopen in Container"**.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
